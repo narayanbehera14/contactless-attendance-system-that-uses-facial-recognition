@@ -1,0 +1,10 @@
+*.zip
+response.json
+test-event.json
+*.pyc
+__pycache__/
+.env
+.vscode/
+
+
+
