@@ -1,0 +1,14 @@
+{
+  "Records": [
+    {
+      "s3": {
+        "bucket": {
+          "name": "narayan-attendance-system-2026"
+        },
+        "object": {
+          "key": "employees/101.jpg"
+        }
+      }
+    }
+  ]
+}

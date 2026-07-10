@@ -1,0 +1,46 @@
+{
+  "LambdaFunctionConfigurations": [
+    {
+      "Id": "RegisterEmployee",
+      "LambdaFunctionArn": "arn:aws:lambda:us-east-1:110248914169:function:registerEmployeeFace",
+      "Events": [
+        "s3:ObjectCreated:*"
+      ],
+      "Filter": {
+        "Key": {
+          "FilterRules": [
+            {
+              "Name": "Prefix",
+              "Value": "employees/"
+            },
+            {
+              "Name": "Suffix",
+              "Value": ".jpg"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "Id": "RecognizeEmployee",
+      "LambdaFunctionArn": "arn:aws:lambda:us-east-1:110248914169:function:recognizeEmployee",
+      "Events": [
+        "s3:ObjectCreated:*"
+      ],
+      "Filter": {
+        "Key": {
+          "FilterRules": [
+            {
+              "Name": "Prefix",
+              "Value": "uploads/"
+            },
+            {
+              "Name": "Suffix",
+              "Value": ".jpg"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
