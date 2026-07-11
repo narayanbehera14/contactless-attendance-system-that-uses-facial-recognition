@@ -1,0 +1,103 @@
+{
+    "Functions": [
+        {
+            "FunctionName": "generateUploadURL",
+            "FunctionArn": "arn:aws:lambda:us-east-1:110248914169:function:generateUploadURL",
+            "Runtime": "python3.12",
+            "Role": "arn:aws:iam::110248914169:role/GenerateUploadURLRole",
+            "Handler": "lambda_function.lambda_handler",
+            "CodeSize": 562,
+            "Description": "",
+            "Timeout": 3,
+            "MemorySize": 128,
+            "LastModified": "2026-07-10T18:26:36.343+0000",
+            "CodeSha256": "L4NExP3yltrbtv9WhUQQTdNSLpUgul5PeYrOKGaFrl8=",
+            "Version": "$LATEST",
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "RevisionId": "9e657056-76a7-498a-a7d6-f665201a976b",
+            "PackageType": "Zip",
+            "Architectures": [
+                "x86_64"
+            ],
+            "EphemeralStorage": {
+                "Size": 512
+            },
+            "SnapStart": {
+                "ApplyOn": "None",
+                "OptimizationStatus": "Off"
+            },
+            "LoggingConfig": {
+                "LogFormat": "Text",
+                "LogGroup": "/aws/lambda/generateUploadURL"
+            }
+        },
+        {
+            "FunctionName": "registerEmployeeFace",
+            "FunctionArn": "arn:aws:lambda:us-east-1:110248914169:function:registerEmployeeFace",
+            "Runtime": "python3.12",
+            "Role": "arn:aws:iam::110248914169:role/RegisterFaceLambdaRole",
+            "Handler": "lambda_function.lambda_handler",
+            "CodeSize": 530,
+            "Description": "",
+            "Timeout": 3,
+            "MemorySize": 128,
+            "LastModified": "2026-07-10T16:29:46.000+0000",
+            "CodeSha256": "ExEIgRqnR1QhI3cKr9G/+yKozmxpFpy2pgpW85yNSYU=",
+            "Version": "$LATEST",
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "RevisionId": "23a8da96-eaad-479e-9e28-bd0f22979ec6",
+            "PackageType": "Zip",
+            "Architectures": [
+                "x86_64"
+            ],
+            "EphemeralStorage": {
+                "Size": 512
+            },
+            "SnapStart": {
+                "ApplyOn": "None",
+                "OptimizationStatus": "Off"
+            },
+            "LoggingConfig": {
+                "LogFormat": "Text",
+                "LogGroup": "/aws/lambda/registerEmployeeFace"
+            }
+        },
+        {
+            "FunctionName": "recognizeEmployee",
+            "FunctionArn": "arn:aws:lambda:us-east-1:110248914169:function:recognizeEmployee",
+            "Runtime": "python3.12",
+            "Role": "arn:aws:iam::110248914169:role/RecognizeEmployeeRole",
+            "Handler": "lambda_function.lambda_handler",
+            "CodeSize": 1007,
+            "Description": "",
+            "Timeout": 3,
+            "MemorySize": 128,
+            "LastModified": "2026-07-10T18:08:39.000+0000",
+            "CodeSha256": "wlZEve+6icUhaHsDudn7Xw96vr2jFnw+gcLWIM0kUM8=",
+            "Version": "$LATEST",
+            "TracingConfig": {
+                "Mode": "PassThrough"
+            },
+            "RevisionId": "da0ced4b-591c-4cea-83b2-3f284ee6c81a",
+            "PackageType": "Zip",
+            "Architectures": [
+                "x86_64"
+            ],
+            "EphemeralStorage": {
+                "Size": 512
+            },
+            "SnapStart": {
+                "ApplyOn": "None",
+                "OptimizationStatus": "Off"
+            },
+            "LoggingConfig": {
+                "LogFormat": "Text",
+                "LogGroup": "/aws/lambda/recognizeEmployee"
+            }
+        }
+    ]
+}
