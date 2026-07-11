@@ -1,10 +1,20 @@
-{
-  "CORSRules": [
-    {
-      "AllowedHeaders": ["*"],
-      "AllowedMethods": ["GET", "PUT", "POST"],
-      "AllowedOrigins": ["http://localhost:5173"],
-      "ExposeHeaders": ["ETag"]
-    }
-  ]
-}
+[
+  {
+    "AllowedHeaders": [
+      "*"
+    ],
+    "AllowedMethods": [
+      "GET",
+      "PUT",
+      "POST",
+      "HEAD"
+    ],
+    "AllowedOrigins": [
+      "https://main.d3qytyd1a704f3.amplifyapp.com"
+    ],
+    "ExposeHeaders": [
+      "ETag"
+    ],
+    "MaxAgeSeconds": 3000
+  }
+]

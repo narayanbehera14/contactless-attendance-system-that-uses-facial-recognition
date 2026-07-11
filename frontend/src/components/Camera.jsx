@@ -22,12 +22,12 @@ export default function Camera() {
     setImage(screenshot);
 
     try {
-      await uploadImage(screenshot);
+      const key = await uploadImage(screenshot);
 
-      // Wait for Lambda to process
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+await new Promise((resolve) => setTimeout(resolve, 3000));
 
-      const result = await getAttendance();
+const result = await getAttendance(key);
+
 
       alert(
         `Employee ID: ${result.employee_id}
