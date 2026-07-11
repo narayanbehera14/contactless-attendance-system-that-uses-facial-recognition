@@ -1,34 +1,48 @@
 import boto3
 import json
-from datetime import datetime
 
 dynamodb = boto3.resource("dynamodb")
-table = dynamodb.Table("Attendance")
+table = dynamodb.Table("RecognitionResults")
+
 
 def lambda_handler(event, context):
 
-    today = datetime.now().strftime("%Y-%m-%d")
+    params = event.get("queryStringParameters")
 
-    response = table.scan()
-
-    items = response["Items"]
-
-    if not items:
+    if not params or "key" not in params:
         return {
-            "statusCode": 404,
-            "body": json.dumps({"message": "No attendance"})
+            "statusCode": 400,
+            "headers": {
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": json.dumps({
+                "message": "Missing image key"
+            })
         }
 
-    latest = sorted(
-        items,
-        key=lambda x: x["clock_in"],
-        reverse=True
-    )[0]
+    image_key = params["key"]
+
+    response = table.get_item(
+        Key={
+            "image_key": image_key
+        }
+    )
+
+    if "Item" not in response:
+        return {
+            "statusCode": 404,
+            "headers": {
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": json.dumps({
+                "message": "Recognition result not found"
+            })
+        }
 
     return {
         "statusCode": 200,
         "headers": {
             "Access-Control-Allow-Origin": "*"
         },
-        "body": json.dumps(latest)
+        "body": json.dumps(response["Item"])
     }

@@ -1,6 +1,6 @@
 import boto3
 from datetime import datetime
-
+kKK
 rekognition = boto3.client("rekognition")
 dynamodb = boto3.resource("dynamodb")
 
@@ -42,11 +42,19 @@ def lambda_handler(event, context):
         }
     )
 
-    if "Item" not in employee:
-        return {
-            "statusCode": 404,
-            "message": "Employee Not Found"
+    if not response["FaceMatches"]:
+
+    results_table.put_item(
+        Item={
+            "image_key": key,
+            "status": "Unknown Person"
         }
+    )
+
+    return {
+        "statusCode": 404,
+        "message": "Unknown Person"
+    }
 
     employee = employee["Item"]
 
