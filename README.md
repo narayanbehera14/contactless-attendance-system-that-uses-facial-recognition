@@ -1,198 +1,100 @@
-# 🚀 Contactless Attendance System using facial recognition
+# 🚀 Contactless Attendance System using AWS Face Recognition
 
-![AWS](https://img.shields.io/badge/AWS-Cloud-orange)
-![React](https://img.shields.io/badge/React-18-blue)
-![Python](https://img.shields.io/badge/Python-3.12-yellow)
-![Lambda](https://img.shields.io/badge/AWS-Lambda-orange)
-![DynamoDB](https://img.shields.io/badge/Amazon-DynamoDB-blue)
-![S3](https://img.shields.io/badge/Amazon-S3-green)
-![API Gateway](https://img.shields.io/badge/API-Gateway-red)
-![License](https://img.shields.io/badge/License-MIT-green)
+A cloud-native, serverless attendance system that uses **Amazon Rekognition** to recognize employees and automatically mark attendance without any physical contact.
 
-A **serverless Contactless Attendance System** built using **AWS Rekognition, AWS Lambda, Amazon S3, DynamoDB, API Gateway, and React.js**.
-
-Employees simply capture their face using a webcam. The image is uploaded securely to Amazon S3 using a pre-signed URL. Amazon Rekognition identifies the employee, and attendance is automatically marked in DynamoDB. An Admin Dashboard displays all attendance records in real time.
+The application captures an employee's face through a web camera, uploads the image to Amazon S3, triggers AWS Lambda for face recognition, stores attendance in DynamoDB, and displays attendance status in real time.
 
 ---
 
-# 📌 Features
+## 🌐 Live Demo
 
-- ✅ Face Recognition Attendance
-- ✅ Contactless Clock In / Clock Out
-- ✅ Employee Registration
-- ✅ Automatic Attendance Logging
-- ✅ Admin Dashboard
-- ✅ REST APIs using API Gateway
-- ✅ Serverless AWS Architecture
-- ✅ React Frontend
-- ✅ Secure Image Upload using Pre-Signed URLs
-- ✅ Real-time Attendance Records
-- ✅ Built completely using AWS CLI
+**Frontend (AWS Amplify)**
+
+https://main.d3qytyd1a704f3.amplifyapp.com/
 
 ---
 
-# 🏗 System Architecture
+## ✨ Features
 
-```
-                     React Frontend
-              (Camera + Admin Dashboard)
-                         │
-                         │ HTTP
-                         ▼
-                  Amazon API Gateway
-                         │
-     ┌───────────────────┼────────────────────┐
-     │                   │                    │
-     ▼                   ▼                    ▼
-Generate Upload     Get Attendance     Get All Attendance
-URL Lambda            Lambda              Lambda
-     │                   │                    │
-     ▼                   ▼                    ▼
- Amazon S3          DynamoDB           DynamoDB
-     │
-     │ S3 Event Trigger
-     ▼
-Recognize Employee Lambda
-     │
-     ▼
-Amazon Rekognition
-     │
-     ▼
-Employees Table
-     │
-     ▼
-Attendance Table
-```
+- 📷 Contactless face-based attendance
+- ☁️ Fully Serverless Architecture
+- ⚡ Real-time attendance marking
+- 🔍 Face recognition using Amazon Rekognition
+- 📝 Automatic Clock-In & Clock-Out
+- 👤 Detects Unknown Person
+- 🚫 Detects No Face Found
+- 📊 Attendance history dashboard
+- 🌍 Hosted on AWS Amplify
+- 🔒 Secure pre-signed S3 image uploads
 
 ---
 
-# 🔄 Project Workflow
+# 🛠 Tech Stack
 
-### Step 1
-
-User opens the React application.
-
-↓
-
-### Step 2
-
-The webcam opens automatically.
-
-↓
-
-### Step 3
-
-User clicks **Capture Face**.
-
-↓
-
-### Step 4
-
-React requests a **Pre-Signed Upload URL** from API Gateway.
-
-↓
-
-### Step 5
-
-GenerateUploadURL Lambda returns a secure upload URL.
-
-↓
-
-### Step 6
-
-The captured image is uploaded directly to Amazon S3.
-
-↓
-
-### Step 7
-
-Amazon S3 triggers the **recognizeEmployee** Lambda.
-
-↓
-
-### Step 8
-
-Lambda sends the image to Amazon Rekognition.
-
-↓
-
-### Step 9
-
-Rekognition identifies the employee.
-
-↓
-
-### Step 10
-
-Employee details are fetched from the Employees DynamoDB table.
-
-↓
-
-### Step 11
-
-Attendance is updated:
-
-- First scan → Clock In
-- Second scan → Clock Out
-
-↓
-
-### Step 12
-
-Frontend requests attendance status.
-
-↓
-
-### Step 13
-
-Attendance details are displayed.
-
-↓
-
-### Step 14
-
-Admin Dashboard shows all attendance records.
-
----
-
-# ☁️ AWS Services Used
-
-| AWS Service | Purpose |
-|-------------|---------|
-| Amazon Rekognition | Facial Recognition |
-| AWS Lambda | Backend Logic |
-| Amazon S3 | Image Storage |
-| Amazon DynamoDB | Employee & Attendance Database |
-| Amazon API Gateway | REST APIs |
-| AWS IAM | Roles & Permissions |
-| Amazon CloudWatch | Logs & Monitoring |
-| AWS CLI | Infrastructure Management |
-
----
-
-# 💻 Tech Stack
-
-## Frontend
+### Frontend
 
 - React.js
-- Vite
 - Axios
 - React Webcam
 
-## Backend
-
-- Python 3.12
-- Boto3
-
-## Cloud
+### Backend
 
 - AWS Lambda
+- Amazon API Gateway
 - Amazon S3
 - Amazon Rekognition
 - Amazon DynamoDB
-- API Gateway
+
+### DevOps / Cloud
+
+- AWS Amplify
 - IAM
 - CloudWatch
+- GitHub
+
+---
+
+# 🏗 Architecture
+
+```
+                React Frontend
+                      │
+                      │
+          Capture Face using Webcam
+                      │
+                      ▼
+        API Gateway (/upload-url)
+                      │
+                      ▼
+        Lambda (Generate Upload URL)
+                      │
+                      ▼
+           Upload Image to Amazon S3
+                      │
+          S3 Object Created Event
+                      │
+                      ▼
+      Lambda (Recognize Employee)
+                      │
+      Amazon Rekognition Search Face
+                      │
+          ┌───────────┴────────────┐
+          │                        │
+      Employee Found         Unknown/No Face
+          │                        │
+          ▼                        ▼
+   Update Attendance        Store Recognition Result
+          │                        │
+          └───────────┬────────────┘
+                      ▼
+             DynamoDB Tables
+                      │
+                      ▼
+        API Gateway (/attendance-result)
+                      │
+                      ▼
+            React Frontend Result
+```
 
 ---
 
@@ -201,91 +103,143 @@ Admin Dashboard shows all attendance records.
 ```
 attendance-project/
 
-│
 ├── frontend/
 │   ├── src/
-│   │
-│   ├── components/
-│   │      Camera.jsx
-│   │
-│   ├── pages/
-│   │      AdminDashboard.jsx
-│   │
-│   ├── services/
-│   │      api.js
-│   │
-│   ├── App.jsx
-│   └── main.jsx
+│   ├── public/
+│   └── package.json
 │
 ├── lambda/
-│
 │   ├── generate_upload_url/
-│   │      lambda_function.py
-│
-│   ├── register_employee/
-│   │      lambda_function.py
-│
 │   ├── recognize_employee/
-│   │      lambda_function.py
+│   ├── register_employee_face/
+│   ├── get_all_attendance/
+│   └── get_attendance_result/
 │
-│   ├── get_attendance_result/
-│   │      lambda_function.py
-│
-│   └── get_all_attendance/
-│          lambda_function.py
-│
-├── screenshots/
-│
-├── architecture/
-│
-└── README.md
+├── iam/
+├── README.md
 ```
 
 ---
 
-# 🗄 Database Design
+# AWS Services Used
 
-## Employees Table
-
-| Attribute | Description |
-|------------|-------------|
-| employee_id | Employee ID (Partition Key) |
-| name | Employee Name |
-| department | Department |
-
-Example
-
-```
-employee_id : 101
-name : Narayan Behera
-department : IT
-```
+- Amazon S3
+- AWS Lambda
+- Amazon API Gateway
+- Amazon Rekognition
+- Amazon DynamoDB
+- AWS Amplify
+- AWS IAM
+- Amazon CloudWatch
 
 ---
 
-## Attendance Table
+# DynamoDB Tables
 
-| Attribute | Description |
-|------------|-------------|
-| employee_id | Partition Key |
-| date | Sort Key |
-| clock_in | Clock In Time |
-| clock_out | Clock Out Time |
-| status | Present |
+## Employees
 
-Example
+| Partition Key |
+|--------------|
+| employee_id |
 
-```
-employee_id : 101
-date : 2026-07-11
-clock_in : 09:05:10
-clock_out : 18:20:11
-status : Present
-```
+Stores employee details.
 
 ---
 
-# 🌐 API Endpoints
+## Attendance
+
+| Partition Key | Sort Key |
+|--------------|----------|
+| employee_id | date |
+
+Stores attendance records.
+
+---
+
+## RecognitionResults
+
+| Partition Key |
+|--------------|
+| image_key |
+
+Stores latest recognition result.
+
+---
+
+# Attendance Flow
+
+### 1. Capture Face
+
+The React application captures a webcam image.
+
+↓
+
+### 2. Upload Image
+
+Frontend requests a pre-signed S3 URL.
+
+↓
+
+### 3. Store Image
+
+Image uploads directly to Amazon S3.
+
+↓
+
+### 4. Trigger Lambda
+
+S3 ObjectCreated event invokes Lambda.
+
+↓
+
+### 5. Face Recognition
+
+Amazon Rekognition searches the employee collection.
+
+↓
+
+### 6. Attendance Processing
+
+If matched:
+
+- Clock In
+- Clock Out
+- Already Clocked Out
+
+Otherwise:
+
+- Unknown Person
+- No Face Detected
+
+↓
+
+### 7. Save Result
+
+Recognition result is stored inside DynamoDB.
+
+↓
+
+### 8. Frontend Displays Result
+
+Frontend polls the result and shows attendance status.
+
+---
+
+# Supported Recognition Results
+
+✅ Clock In Successful
+
+✅ Clock Out Successful
+
+✅ Already Clocked Out Today
+
+❌ Unknown Person
+
+❌ No Face Detected
+
+---
+
+# API Endpoints
 
 ## Generate Upload URL
 
@@ -293,239 +247,123 @@ status : Present
 POST /upload-url
 ```
 
-Returns
-
-```json
-{
-  "uploadUrl": "...",
-  "key": "employee.jpg"
-}
-```
+Returns a pre-signed S3 upload URL.
 
 ---
 
-## Get Attendance
+## Attendance Result
 
 ```
-GET /attendance
+GET /attendance-result?key=<image_key>
 ```
 
-Returns
-
-```json
-{
-  "employee_id":"101",
-  "clock_in":"09:10",
-  "clock_out":"",
-  "status":"Present"
-}
-```
+Returns recognition result.
 
 ---
 
-## Get All Attendance
+## Attendance History
 
 ```
 GET /attendance/all
 ```
 
-Returns
+Returns all attendance records.
 
-```json
-[
-  {
-    "employee_id":"101",
-    "date":"2026-07-11",
-    "clock_in":"09:10",
-    "clock_out":"18:00",
-    "status":"Present"
-  }
-]
+---
+
+# Screenshots
+
+Add screenshots here.
+
+```
+screenshots/
+
+Home.png
+
+Attendance.png
+
+Recognition.png
+
+Dashboard.png
 ```
 
 ---
 
-# 📸 Screenshots
+# Installation
 
-## Employee Panel
-
-> Add your screenshot here
-
-```
-screenshots/employee-panel.png
-```
-
----
-
-## Face Recognition
-
-> Add your screenshot here
-
-```
-screenshots/capture-face.png
-```
-
----
-
-## Admin Dashboard
-
-> Add your screenshot here
-
-```
-screenshots/admin-dashboard.png
-```
-
----
-
-## AWS Architecture
-
-> Add your architecture diagram
-
-```
-architecture/aws-architecture.png
-```
-
----
-
-# ⚙️ Installation
-
-## Clone Repository
+Clone the repository
 
 ```bash
 git clone https://github.com/narayanbehera14/contactless-attendance-system-that-uses-facial-recognition.git
 ```
 
-```
+Go to project
+
+```bash
 cd contactless-attendance-system-that-uses-facial-recognition
 ```
 
----
-
-## Install Frontend
+Install frontend
 
 ```bash
 cd frontend
+
 npm install
 ```
 
----
-
-## Run Frontend
+Run
 
 ```bash
 npm run dev
 ```
 
-Application runs at
-
-```
-http://localhost:5173
-```
-
 ---
 
-# ☁️ AWS Setup
+# Deployment
 
-Create the following AWS resources:
+Frontend
 
-- Amazon S3 Bucket
-- Rekognition Collection
-- Employees DynamoDB Table
-- Attendance DynamoDB Table
-- API Gateway
-- IAM Roles
-- Lambda Functions
+- AWS Amplify
 
-Deploy the following Lambda functions:
+Backend
 
-- generateUploadURL
-- registerEmployeeFace
-- recognizeEmployee
-- getAttendanceResult
-- getAllAttendance
-
----
-
-# 🔐 IAM Permissions
-
-The Lambda execution roles require permissions for:
-
+- AWS Lambda
+- Amazon API Gateway
 - Amazon S3
-- Amazon Rekognition
-- Amazon DynamoDB
-- CloudWatch Logs
+- DynamoDB
+- Rekognition
 
 ---
 
-# 🚀 Future Improvements
+# Future Improvements
 
-- Admin Login Authentication
-- Employee Login
-- Attendance Analytics Dashboard
-- Monthly Reports
-- Excel Export
-- PDF Report Generation
+- Employee Registration UI
+- Admin Authentication
+- JWT Authentication
+- Live Attendance Dashboard
 - Email Notifications
-- Leave Management System
-- QR Code Attendance
-- Multi-Camera Support
-- CI/CD using GitHub Actions
-- Docker Deployment
-- Terraform Infrastructure as Code
+- Multi-Office Support
+- Attendance Reports (PDF/Excel)
+- Analytics Dashboard
 
 ---
 
-# 📚 Learning Outcomes
+# Author
 
-This project helped me gain hands-on experience with:
+**Narayan Behera**
 
-- Serverless Computing
-- AWS Lambda Development
-- Amazon Rekognition
-- API Gateway
-- DynamoDB Design
-- Event-Driven Architecture
-- IAM Roles & Policies
-- Amazon S3
-- React.js Integration
-- AWS CLI
-- Cloud-Based Application Development
+MCA Student | Cloud & DevOps Enthusiast
+
+- GitHub: https://github.com/narayanbehera14
+- LinkedIn: https://www.linkedin.com/in/narayanbehera
 
 ---
 
-# ⭐ Support
-
-If you found this project useful, please consider giving it a ⭐ on GitHub.
-
----
-
-# 📄 License
+# License
 
 This project is licensed under the MIT License.
+````
 
----
+This README follows the structure commonly used in professional open-source projects and clearly documents your serverless AWS architecture and live demo. ([github.com][1])
 
-# 👨‍💻 Author
-
-## Narayan Behera
-
-**MCA Student | AWS Cloud | DevOps | Full Stack Developer**
-
-### GitHub
-
-https://github.com/narayanbehera14
-
-### LinkedIn
-
-https://www.linkedin.com/in/your-linkedin-profile
-
----
-
-## 🙏 Acknowledgements
-
-- Amazon Web Services (AWS)
-- React.js
-- Vite
-- Axios
-- Boto3
-- Open Source Community
+[1]: https://github.com/Mina329/attendo?utm_source=chatgpt.com "GitHub - Mina329/attendo: Attendo (Attendance Management System based on face recognition - Graduation Project) · GitHub"
