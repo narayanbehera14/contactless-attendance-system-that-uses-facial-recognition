@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Attendance Dashboard</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f4f6f9;margin:0}
+.container{width:92%;margin:auto;padding:25px}
+h1{text-align:center;color:#1f3b6f}
+.cards{display:flex;gap:20px;margin:20px 0;flex-wrap:wrap}
+.card{flex:1;min-width:180px;background:#fff;padding:18px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1);text-align:center}
+.card h3{margin:0;color:#007bff}.card p{font-size:26px;font-weight:bold}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+input,select,button{padding:10px;border-radius:6px;border:1px solid #ccc}
+button{background:#007bff;color:#fff;border:none;cursor:pointer}
+button:hover{background:#0056b3}
+table{width:100%;border-collapse:collapse;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+th{background:#007bff;color:#fff;padding:12px}
+td{padding:10px;text-align:center;border-bottom:1px solid #ddd}
+tr:nth-child(even){background:#f8f9fa}tr:hover{background:#eef5ff}
+.present{color:green;font-weight:bold}.late{color:#d97706;font-weight:bold}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>📊 Admin Attendance Dashboard</h1>
+<div class="cards">
+<div class="card"><h3>Total Records</h3><p id="total">0</p></div>
+<div class="card"><h3>Present</h3><p id="present">0</p></div>
+<div class="card"><h3>Late</h3><p id="late">0</p></div>
+</div>
+<div class="controls">
+<input id="emp" placeholder="Employee ID">
+<input type="date" id="date">
+<select id="status">
+<option value="">All Status</option>
+<option>Present</option>
+<option>Late</option>
+</select>
+<button onclick="applyFilters()">Apply Filters</button>
+<button onclick="clearFilters()">Clear Filters</button>
+<button onclick="loadAttendance()">Refresh</button>
+</div>
+<table>
+<thead><tr><th>Employee ID</th><th>Date</th><th>Clock In</th><th>Clock Out</th><th>Status</th></tr></thead>
+<tbody id="attendanceTable"></tbody>
+</table>
+</div>
+<script>
+const API_URL="https://w5sbqaczm1.execute-api.ap-south-1.amazonaws.com/attendance";
+let allData=[];
+async function loadAttendance(){
+ const r=await fetch(API_URL); allData=await r.json(); render(allData);
+}
+function render(data){
+ const tb=document.getElementById("attendanceTable");
+ tb.innerHTML="";
+ let p=0,l=0;
+ data.forEach(x=>{
+   if(x.status==="Present")p++; if(x.status==="Late")l++;
+   tb.innerHTML+=`<tr><td>${x.employee_id}</td><td>${x.date}</td><td>${x.clock_in}</td><td>${x.clock_out||"-"}</td><td class="${x.status==="Present"?"present":"late"}">${x.status}</td></tr>`;
+ });
+ document.getElementById("total").textContent=data.length;
+ document.getElementById("present").textContent=p;
+ document.getElementById("late").textContent=l;
+}
+function applyFilters(){
+ const e=document.getElementById("emp").value.trim().toUpperCase();
+ const d=document.getElementById("date").value;
+ const s=document.getElementById("status").value;
+ render(allData.filter(x=>(!e||x.employee_id.includes(e))&&(!d||x.date===d)&&(!s||x.status===s)));
+}
+function clearFilters(){
+ document.getElementById("emp").value="";
+ document.getElementById("date").value="";
+ document.getElementById("status").value="";
+ render(allData);
+}
+loadAttendance();
+</script>
+</body>
+</html>
